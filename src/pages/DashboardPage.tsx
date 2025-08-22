@@ -7,8 +7,7 @@ import { useAuth } from '@/components/AuthProvider';
 import { ClaimsProvider } from '@/components/ClaimsProvider';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
-import InteractiveShowcase from '@/components/InteractiveShowcase';
-import ResultDisplay from '@/components/ResultDisplay';
+import ChatInterface from '@/components/ChatInterface';
 import ProcessVisualization from '@/components/ProcessVisualization';
 import Footer from '@/components/Footer';
 
@@ -59,8 +58,7 @@ const DashboardPage = () => {
         
         <main>
           <HeroSection />
-          <InteractiveShowcase />
-          <ResultDisplay />
+          <ChatInterface />
           <ProcessVisualization />
         </main>
         <Footer />
