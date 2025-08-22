@@ -1,0 +1,60 @@
+
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/components/AuthProvider';
+import { supabase } from '@/integrations/supabase/client';
+
+const Index = () => {
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
+  // Set up real-time subscription to listen for new claims
+  useEffect(() => {
+    const channel = supabase
+      .channel('claims-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'claims'
+        },
+        () => {
+          window.location.reload();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        // Redirect authenticated users to dashboard
+        navigate('/dashboard');
+      } else {
+        // Redirect unauthenticated users to login
+        navigate('/login');
+      }
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Laden...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // This component will redirect, so we don't need to render anything else
+  return null;
+};
+
+export default Index;
