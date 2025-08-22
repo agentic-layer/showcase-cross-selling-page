@@ -40,9 +40,9 @@ const ProcessVisualization = () => {
               {/* Line from Host Agent to Cross Selling Agent */}
               <line 
                 x1="50%" 
-                y1="100px" 
-                x2="25%" 
-                y2="280px" 
+                y1="140px" 
+                x2="30%" 
+                y2="240px" 
                 stroke="hsl(var(--border))" 
                 strokeWidth="2"
                 markerEnd="url(#arrowhead)"
@@ -50,9 +50,9 @@ const ProcessVisualization = () => {
               {/* Line from Host Agent to Communications Agent */}
               <line 
                 x1="50%" 
-                y1="100px" 
-                x2="75%" 
-                y2="280px" 
+                y1="140px" 
+                x2="70%" 
+                y2="240px" 
                 stroke="hsl(var(--border))" 
                 strokeWidth="2"
                 markerEnd="url(#arrowhead)"
