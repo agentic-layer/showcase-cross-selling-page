@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +15,7 @@ import Footer from '@/components/Footer';
 const DashboardPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [showCustomerData, setShowCustomerData] = useState(false);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -60,9 +61,27 @@ const DashboardPage = () => {
         <main>
           <HeroSection />
           <ChatInterface />
-          <div className="container mx-auto px-6 py-12">
-            <CustomerDataTable />
+          
+          {/* Toggle Button for Customer Data */}
+          <div className="container mx-auto px-6 py-6">
+            <div className="flex justify-center">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowCustomerData(!showCustomerData)}
+                className="px-6 py-2"
+              >
+                {showCustomerData ? 'Kundendaten ausblenden' : 'Kundendaten anzeigen'}
+              </Button>
+            </div>
           </div>
+          
+          {/* Customer Data Table */}
+          {showCustomerData && (
+            <div className="container mx-auto px-6 pb-12">
+              <CustomerDataTable />
+            </div>
+          )}
+          
           <ProcessVisualization />
         </main>
         <Footer />
