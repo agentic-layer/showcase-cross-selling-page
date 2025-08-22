@@ -11,13 +11,6 @@ const ProcessVisualization = () => {
         
         <div className="w-full min-h-[600px] rounded-lg bg-card border p-8 flex items-center justify-center">
           <div className="relative w-full max-w-4xl h-96">
-            {/* User Interaction Arrow */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-              <span className="text-sm text-muted-foreground mb-2">Benutzer</span>
-              <div className="w-0.5 h-6 bg-border"></div>
-              <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent border-t-border"></div>
-            </div>
-
             {/* Host Agent - Top Center */}
             <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-10">
               <div className="bg-primary text-primary-foreground rounded-lg p-6 shadow-lg min-w-[180px] text-center">
@@ -36,7 +29,7 @@ const ProcessVisualization = () => {
 
             {/* Communications Agent - Bottom Right */}
             <div className="absolute bottom-8 right-8">
-              <div className="bg-primary text-primary-foreground rounded-lg p-6 shadow-lg min-w-[180px] text-center">
+              <div className="bg-secondary text-secondary-foreground rounded-lg p-6 shadow-lg min-w-[180px] text-center">
                 <h3 className="font-semibold text-lg mb-2">Communications Agent</h3>
                 <p className="text-sm opacity-90">Kundenkommunikation</p>
               </div>
@@ -44,16 +37,6 @@ const ProcessVisualization = () => {
 
             {/* Connection Lines using SVG */}
             <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-              {/* Vertical arrow from top to Host Agent */}
-              <line 
-                x1="50%" 
-                y1="-38px" 
-                x2="50%" 
-                y2="110px" 
-                stroke="hsl(var(--border))" 
-                strokeWidth="3"
-                markerEnd="url(#arrowhead)"
-              />
               {/* Line from Host Agent to Cross Selling Agent */}
               <line 
                 x1="50%" 
