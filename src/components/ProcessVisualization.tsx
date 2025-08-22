@@ -49,7 +49,7 @@ const ProcessVisualization = () => {
                 x1="50%" 
                 y1="0px" 
                 x2="50%" 
-                y2="64px" 
+                y2="110px" 
                 stroke="hsl(var(--border))" 
                 strokeWidth="3"
                 markerEnd="url(#arrowhead)"
