@@ -44,6 +44,16 @@ const ProcessVisualization = () => {
 
             {/* Connection Lines using SVG */}
             <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+              {/* Vertical arrow from top to Host Agent */}
+              <line 
+                x1="50%" 
+                y1="36px" 
+                x2="50%" 
+                y2="64px" 
+                stroke="hsl(var(--border))" 
+                strokeWidth="2"
+                markerEnd="url(#arrowhead)"
+              />
               {/* Line from Host Agent to Cross Selling Agent */}
               <line 
                 x1="50%" 
