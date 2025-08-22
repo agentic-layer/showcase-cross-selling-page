@@ -47,11 +47,11 @@ const ProcessVisualization = () => {
               {/* Vertical arrow from top to Host Agent */}
               <line 
                 x1="50%" 
-                y1="36px" 
+                y1="0px" 
                 x2="50%" 
                 y2="64px" 
                 stroke="hsl(var(--border))" 
-                strokeWidth="2"
+                strokeWidth="3"
                 markerEnd="url(#arrowhead)"
               />
               {/* Line from Host Agent to Cross Selling Agent */}
