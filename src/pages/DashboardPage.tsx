@@ -8,6 +8,7 @@ import { ClaimsProvider } from '@/components/ClaimsProvider';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import ChatInterface from '@/components/ChatInterface';
+import { CustomerDataTable } from '@/components/CustomerDataTable';
 import ProcessVisualization from '@/components/ProcessVisualization';
 import Footer from '@/components/Footer';
 
@@ -59,6 +60,9 @@ const DashboardPage = () => {
         <main>
           <HeroSection />
           <ChatInterface />
+          <div className="container mx-auto px-6 py-12">
+            <CustomerDataTable />
+          </div>
           <ProcessVisualization />
         </main>
         <Footer />
