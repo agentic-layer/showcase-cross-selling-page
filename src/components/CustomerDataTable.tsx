@@ -1157,7 +1157,7 @@ const CustomerDataTable: React.FC = () => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Customer Data Overview</CardTitle>
+        <CardTitle>Kundendaten</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="rounded-md border">
