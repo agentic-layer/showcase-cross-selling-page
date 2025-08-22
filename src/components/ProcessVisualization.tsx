@@ -12,7 +12,7 @@ const ProcessVisualization = () => {
         <div className="w-full min-h-[600px] rounded-lg bg-card border p-8 flex items-center justify-center">
           <div className="relative w-full max-w-4xl h-96">
             {/* Host Agent - Top Center */}
-            <div className="absolute top-8 left-1/2 transform -translate-x-1/2">
+            <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-10">
               <div className="bg-primary text-primary-foreground rounded-lg p-6 shadow-lg min-w-[180px] text-center">
                 <h3 className="font-semibold text-lg mb-2">Host Agent</h3>
                 <p className="text-sm opacity-90">Zentrale Steuerung</p>
