@@ -34,7 +34,7 @@ const DashboardPage = () => {
                 alt="QAware Logo" 
                 className="h-8 w-8"
               />
-              <span className="ml-2 font-semibold text-lg">Claims Agent</span>
+              <span className="ml-2 font-semibold text-lg">Cross Selling Agent</span>
             </div>
             
             {/* Navigation and logout */}
