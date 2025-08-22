@@ -15,7 +15,7 @@ const HeroSection = () => {
         
         <div className="max-w-3xl mx-auto text-lg leading-relaxed text-muted-foreground space-y-6">
           <p>
-            Unser intelligenter Cross‑Selling‑Agent analysiert kontinuierlich Kunden‑ und Produktdaten Ihrer Versicherung, um maßgeschneiderte Verkaufschancen zu identifizieren – vollautomatisch, datengestützt und kundenorientiert.
+            Unser intelligenter Cross‑Selling‑Agent analysiert Kunden‑ und Produktdaten Ihrer Versicherung, um maßgeschneiderte Verkaufschancen zu identifizieren – vollautomatisch, datengestützt und kundenorientiert.
             Durch die Verknüpfung von Kundenprofilen, Vertragshistorie und Produktportfolio erkennt der Agent optimale Cross‑Selling‑Potenziale.
           </p>
           
