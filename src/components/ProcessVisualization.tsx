@@ -47,7 +47,7 @@ const ProcessVisualization = () => {
               {/* Vertical arrow from top to Host Agent */}
               <line 
                 x1="50%" 
-                y1="0px" 
+                y1="-38px" 
                 x2="50%" 
                 y2="110px" 
                 stroke="hsl(var(--border))" 
