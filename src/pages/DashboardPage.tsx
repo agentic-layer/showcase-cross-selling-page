@@ -8,7 +8,7 @@ import { ClaimsProvider } from '@/components/ClaimsProvider';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import ChatInterface from '@/components/ChatInterface';
-import { CustomerDataTable } from '@/components/CustomerDataTable';
+import CustomerDataTable from '@/components/CustomerDataTable';
 import ProcessVisualization from '@/components/ProcessVisualization';
 import Footer from '@/components/Footer';
 
