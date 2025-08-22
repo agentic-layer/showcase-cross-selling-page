@@ -29,7 +29,7 @@ const ProcessVisualization = () => {
 
             {/* Communications Agent - Bottom Right */}
             <div className="absolute bottom-8 right-8">
-              <div className="bg-secondary text-secondary-foreground rounded-lg p-6 shadow-lg min-w-[180px] text-center">
+              <div className="bg-primary text-primary-foreground rounded-lg p-6 shadow-lg min-w-[180px] text-center">
                 <h3 className="font-semibold text-lg mb-2">Communications Agent</h3>
                 <p className="text-sm opacity-90">Kundenkommunikation</p>
               </div>
