@@ -6,7 +6,7 @@ const ProcessVisualization = () => {
     <section id="technologie" className="py-20 px-6 bg-muted/20">
       <div className="container mx-auto max-w-6xl text-center">
         <h2 className="text-4xl font-bold mb-12 text-foreground">
-          Der Agentic Workflow im Hintergrund
+          Agentenkommunikation
         </h2>
         
         <div className="w-full min-h-[600px] rounded-lg bg-card border p-8 flex items-center justify-center">
