@@ -35,18 +35,46 @@ const ProcessVisualization = () => {
               </div>
             </div>
 
-            {/* Connection Lines */}
-            {/* Line from Host to Cross Selling - Diagonal */}
-            <div className="absolute top-[120px] left-[calc(50%-60px)] w-0.5 h-32 bg-border origin-top transform rotate-[-45deg]">
-              <div className="absolute -top-2 -left-2 w-4 h-4 bg-primary rounded-full"></div>
-              <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-accent rounded-full"></div>
-            </div>
-
-            {/* Line from Host to Communications - Diagonal */}
-            <div className="absolute top-[120px] right-[calc(50%-60px)] w-0.5 h-32 bg-border origin-top transform rotate-[45deg]">
-              <div className="absolute -top-2 -left-2 w-4 h-4 bg-primary rounded-full"></div>
-              <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-secondary rounded-full"></div>
-            </div>
+            {/* Connection Lines using SVG */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+              {/* Line from Host Agent to Cross Selling Agent */}
+              <line 
+                x1="50%" 
+                y1="100px" 
+                x2="25%" 
+                y2="280px" 
+                stroke="hsl(var(--border))" 
+                strokeWidth="2"
+                markerEnd="url(#arrowhead)"
+              />
+              {/* Line from Host Agent to Communications Agent */}
+              <line 
+                x1="50%" 
+                y1="100px" 
+                x2="75%" 
+                y2="280px" 
+                stroke="hsl(var(--border))" 
+                strokeWidth="2"
+                markerEnd="url(#arrowhead)"
+              />
+              
+              {/* Arrow marker definition */}
+              <defs>
+                <marker 
+                  id="arrowhead" 
+                  markerWidth="10" 
+                  markerHeight="7" 
+                  refX="9" 
+                  refY="3.5" 
+                  orient="auto"
+                >
+                  <polygon 
+                    points="0 0, 10 3.5, 0 7" 
+                    fill="hsl(var(--border))" 
+                  />
+                </marker>
+              </defs>
+            </svg>
 
             {/* Communication Labels */}
             <div className="absolute top-40 left-[calc(25%)] text-xs text-muted-foreground text-center">
