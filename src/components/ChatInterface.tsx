@@ -130,8 +130,8 @@ const ChatInterface = () => {
             </CardTitle>
           </CardHeader>
           
-          <CardContent className="flex-1 flex flex-col p-0">
-            <ScrollArea className="flex-1 px-6" ref={scrollAreaRef}>
+          <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
+            <ScrollArea className="flex-1 px-6 h-0" ref={scrollAreaRef}>
               <div className="space-y-4 py-4">
                 {messages.map((message) => (
                   <div
