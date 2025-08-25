@@ -151,15 +151,15 @@ const ChatInterface = () => {
                         <Bot className="w-4 h-4" />
                       )}
                     </div>
-                    <div className={`flex-1 max-w-[80%] ${
+                    <div className={`flex-1 max-w-[80%] min-w-0 ${
                       message.role === 'user' ? 'text-right' : ''
                     }`}>
-                      <div className={`p-3 rounded-lg ${
+                      <div className={`p-3 rounded-lg break-words ${
                         message.role === 'user'
-                          ? 'bg-primary text-primary-foreground ml-auto'
-                          : 'bg-muted text-muted-foreground'
+                          ? 'bg-primary text-primary-foreground ml-auto max-w-full'
+                          : 'bg-muted text-muted-foreground max-w-full'
                       }`}>
-                        <p className="whitespace-pre-wrap">{message.content}</p>
+                        <p className="whitespace-pre-wrap break-words overflow-wrap-anywhere">{message.content}</p>
                         <p className={`text-xs mt-1 opacity-70 ${
                           message.role === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground/70'
                         }`}>
@@ -177,8 +177,8 @@ const ChatInterface = () => {
                     <div className="p-2 rounded-full bg-accent text-accent-foreground">
                       <Bot className="w-4 h-4" />
                     </div>
-                    <div className="flex-1 max-w-[80%]">
-                      <div className="p-3 rounded-lg bg-muted text-muted-foreground">
+                    <div className="flex-1 max-w-[80%] min-w-0">
+                      <div className="p-3 rounded-lg bg-muted text-muted-foreground max-w-full">
                         <div className="flex items-center space-x-2">
                           <Loader2 className="w-4 h-4 animate-spin" />
                           <span>Agent denkt nach...</span>
