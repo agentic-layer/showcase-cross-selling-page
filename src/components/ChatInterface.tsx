@@ -28,8 +28,8 @@ const ChatInterface = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
-  // You need to replace this with your actual Google OAuth Client ID from Google Cloud Console
-  const GOOGLE_CLIENT_ID = "YOUR_ACTUAL_GOOGLE_CLIENT_ID_HERE";
+  // Replace with your Google OAuth Client ID
+  const GOOGLE_CLIENT_ID = "387309373030-6c241fevit9n2av16r5mdmksubtf69ur.apps.googleusercontent.com";
   const { isAuthenticated, user, idToken, isLoading: authLoading, signIn, signOut } = useGoogleAuth({
     clientId: GOOGLE_CLIENT_ID
   });
