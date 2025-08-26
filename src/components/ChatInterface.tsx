@@ -29,7 +29,7 @@ const ChatInterface = () => {
   const { toast } = useToast();
   
   // Replace with your Google OAuth Client ID
-  const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
+  const GOOGLE_CLIENT_ID = "387309373030-6c241fevit9n2av16r5mdmksubtf69ur.apps.googleusercontent.com";
   const { isAuthenticated, user, idToken, isLoading: authLoading, signIn, signOut } = useGoogleAuth({
     clientId: GOOGLE_CLIENT_ID
   });
