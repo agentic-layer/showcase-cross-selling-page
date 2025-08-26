@@ -2,38 +2,8 @@ import { useState, useEffect } from 'react';
 
 declare global {
   interface Window {
-    gapi: {
-      load: (api: string, callback: () => void) => void;
-      auth2: {
-        init: (config: { client_id: string }) => any;
-        getAuthInstance: () => {
-          isSignedIn: {
-            get: () => boolean;
-          };
-          currentUser: {
-            get: () => {
-              getAuthResponse: () => { id_token: string };
-              getBasicProfile: () => {
-                getId: () => string;
-                getName: () => string;
-                getEmail: () => string;
-                getImageUrl: () => string;
-              };
-            };
-          };
-          signIn: () => Promise<{
-            getAuthResponse: () => { id_token: string };
-            getBasicProfile: () => {
-              getId: () => string;
-              getName: () => string;
-              getEmail: () => string;
-              getImageUrl: () => string;
-            };
-          }>;
-          signOut: () => Promise<void>;
-        };
-      };
-    };
+    google: any;
+    gapi: any;
   }
 }
 
@@ -41,28 +11,21 @@ interface GoogleAuthConfig {
   clientId: string;
 }
 
-interface GoogleUser {
-  id: string;
-  name: string;
-  email: string;
-  picture: string;
-}
-
 export const useGoogleAuth = ({ clientId }: GoogleAuthConfig) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<GoogleUser | null>(null);
+  const [user, setUser] = useState<any>(null);
   const [idToken, setIdToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [googleAuth, setGoogleAuth] = useState<any>(null);
 
   useEffect(() => {
     const initGoogleAuth = async () => {
       try {
-        // Load Google API script
-        if (!window.gapi) {
+        // Load Google Identity Services
+        if (!window.google) {
           const script = document.createElement('script');
-          script.src = 'https://apis.google.com/js/api.js';
+          script.src = 'https://accounts.google.com/gsi/client';
           script.async = true;
+          script.defer = true;
           document.head.appendChild(script);
           
           await new Promise((resolve) => {
@@ -70,31 +33,17 @@ export const useGoogleAuth = ({ clientId }: GoogleAuthConfig) => {
           });
         }
 
-        // Initialize gapi
-        await new Promise<void>((resolve) => {
-          window.gapi.load('auth2', () => resolve());
-        });
-
-        const auth = window.gapi.auth2.init({
+        // Initialize Google Sign-In
+        window.google.accounts.id.initialize({
           client_id: clientId,
+          callback: handleCredentialResponse,
+          auto_select: false,
         });
-
-        setGoogleAuth(auth);
 
         // Check if user is already signed in
-        const authInstance = window.gapi.auth2.getAuthInstance();
-        if (authInstance.isSignedIn.get()) {
-          const googleUser = authInstance.currentUser.get();
-          const authResponse = googleUser.getAuthResponse();
-          const profile = googleUser.getBasicProfile();
-          
-          setUser({
-            id: profile.getId(),
-            name: profile.getName(),
-            email: profile.getEmail(),
-            picture: profile.getImageUrl()
-          });
-          setIdToken(authResponse.id_token);
+        const savedToken = localStorage.getItem('google_id_token');
+        if (savedToken) {
+          setIdToken(savedToken);
           setIsAuthenticated(true);
         }
 
@@ -108,40 +57,34 @@ export const useGoogleAuth = ({ clientId }: GoogleAuthConfig) => {
     initGoogleAuth();
   }, [clientId]);
 
-  const signIn = async () => {
-    try {
-      if (!googleAuth) return;
-      
-      const authInstance = window.gapi.auth2.getAuthInstance();
-      const googleUser = await authInstance.signIn();
-      const authResponse = googleUser.getAuthResponse();
-      const profile = googleUser.getBasicProfile();
-      
-      setUser({
-        id: profile.getId(),
-        name: profile.getName(),
-        email: profile.getEmail(),
-        picture: profile.getImageUrl()
-      });
-      setIdToken(authResponse.id_token);
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error('Error signing in:', error);
+  const handleCredentialResponse = (response: any) => {
+    const credential = response.credential;
+    
+    // Decode the JWT token to get user info
+    const payload = JSON.parse(atob(credential.split('.')[1]));
+    
+    setUser(payload);
+    setIdToken(credential);
+    setIsAuthenticated(true);
+    
+    // Store the token for future use
+    localStorage.setItem('google_id_token', credential);
+  };
+
+  const signIn = () => {
+    if (window.google) {
+      window.google.accounts.id.prompt();
     }
   };
 
-  const signOut = async () => {
-    try {
-      if (!googleAuth) return;
-      
-      const authInstance = window.gapi.auth2.getAuthInstance();
-      await authInstance.signOut();
-      
-      setUser(null);
-      setIdToken(null);
-      setIsAuthenticated(false);
-    } catch (error) {
-      console.error('Error signing out:', error);
+  const signOut = () => {
+    setUser(null);
+    setIdToken(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem('google_id_token');
+    
+    if (window.google) {
+      window.google.accounts.id.disableAutoSelect();
     }
   };
 
