@@ -1,36 +1,51 @@
-
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useGoogleAuth } from '@/hooks/useGoogleAuth';
-import { LogIn, Loader2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { supabase } from '@/integrations/supabase/client';
 
 const LoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  
-  // You need to replace this with your actual Google OAuth Client ID from Google Cloud Console
-  const GOOGLE_CLIENT_ID = "YOUR_ACTUAL_GOOGLE_CLIENT_ID_HERE";
-  const { isAuthenticated, user, isLoading, signIn } = useGoogleAuth({
-    clientId: GOOGLE_CLIENT_ID
-  });
 
   useEffect(() => {
-    // Redirect authenticated users to dashboard
-    if (isAuthenticated && user) {
-      navigate('/dashboard');
-    }
-  }, [isAuthenticated, user, navigate]);
+    // Check if user is already logged in
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        navigate('/dashboard');
+      }
+    };
+    checkAuth();
+  }, [navigate]);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
-          <p className="text-muted-foreground">Lade Google Authentication...</p>
-        </div>
-      </div>
-    );
-  }
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        setError('Zugangsdaten ungültig');
+        return;
+      }
+
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Zugangsdaten ungültig');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
@@ -40,20 +55,51 @@ const LoginPage = () => {
             Anmeldung
           </h2>
           <p className="mt-2 text-muted-foreground">
-            Melden Sie sich mit Ihrem Google-Konto an
+            Melden Sie sich mit Ihren Zugangsdaten an
           </p>
         </div>
 
-        <div className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-6">
+          {error && (
+            <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md border border-destructive/20">
+              {error}
+            </div>
+          )}
+
+          <div className="space-y-2">
+            <Label htmlFor="email">E-Mail</Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="ihre.email@beispiel.de"
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password">Passwort</Label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Ihr Passwort"
+              className="w-full"
+            />
+          </div>
+
           <Button
-            onClick={signIn}
-            className="w-full flex items-center justify-center gap-3"
-            size="lg"
+            type="submit"
+            className="w-full"
+            disabled={loading}
           >
-            <LogIn className="w-5 h-5" />
-            Mit Google anmelden
+            {loading ? 'Anmeldung läuft...' : 'Login'}
           </Button>
-        </div>
+        </form>
       </div>
     </div>
   );

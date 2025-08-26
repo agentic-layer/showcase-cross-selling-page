@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/components/AuthProvider';
 import { ClaimsProvider } from '@/components/ClaimsProvider';
@@ -14,12 +15,12 @@ import Footer from '@/components/Footer';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const [showCustomerData, setShowCustomerData] = useState(false);
   const [showProductData, setShowProductData] = useState(false);
 
   const handleLogout = async () => {
-    await signOut();
+    await supabase.auth.signOut();
     navigate('/login');
   };
 
@@ -50,7 +51,7 @@ const DashboardPage = () => {
                 </a>
               </nav>
               <span className="text-sm text-muted-foreground">
-                {user?.name || user?.email}
+                {user?.email}
               </span>
               <Button variant="outline" onClick={handleLogout}>
                 Abmelden
