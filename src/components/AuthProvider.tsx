@@ -1,17 +1,24 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
+
+import React, { createContext, useContext } from 'react';
+import { useGoogleAuth } from '@/hooks/useGoogleAuth';
+
+interface GoogleUser {
+  id: string;
+  name: string;
+  email: string;
+  picture: string;
+}
 
 interface AuthContextType {
-  user: User | null;
-  session: Session | null;
+  user: GoogleUser | null;
   loading: boolean;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  session: null,
   loading: true,
+  signOut: async () => {},
 });
 
 export const useAuth = () => {
@@ -27,32 +34,18 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      }
-    );
-
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  // You need to replace this with your actual Google OAuth Client ID from Google Cloud Console
+  const GOOGLE_CLIENT_ID = "YOUR_ACTUAL_GOOGLE_CLIENT_ID_HERE";
+  const { user, isLoading, signOut } = useGoogleAuth({
+    clientId: GOOGLE_CLIENT_ID
+  });
 
   return (
-    <AuthContext.Provider value={{ user, session, loading }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      loading: isLoading, 
+      signOut 
+    }}>
       {children}
     </AuthContext.Provider>
   );
