@@ -15,12 +15,12 @@ import Footer from '@/components/Footer';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [showCustomerData, setShowCustomerData] = useState(false);
   const [showProductData, setShowProductData] = useState(false);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await signOut();
     navigate('/login');
   };
 
