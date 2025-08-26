@@ -8,19 +8,6 @@ const ProcessVisualization = () => {
         <h2 className="text-4xl font-bold mb-8 text-foreground">
           Agentenkommunikation
         </h2>
-        <div className="mb-8">
-          <a 
-            href="https://o11y.k8s.agentic-layer.ai/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-          >
-            <span>Observability Dashboard</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-        </div>
         
         <div className="w-full min-h-[600px] rounded-lg bg-card border p-8 flex items-center justify-center">
           <div className="relative w-full max-w-4xl h-96">
