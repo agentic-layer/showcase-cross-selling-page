@@ -3,9 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Send, Bot, User, Loader2, LogIn } from 'lucide-react';
+import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useGoogleAuth } from '@/hooks/useGoogleAuth';
 
 interface Message {
   id: string;
@@ -27,12 +26,6 @@ const ChatInterface = () => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  
-  // Replace with your Google OAuth Client ID
-  const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
-  const { isAuthenticated, user, idToken, isLoading: authLoading, signIn, signOut } = useGoogleAuth({
-    clientId: GOOGLE_CLIENT_ID
-  });
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -44,7 +37,7 @@ const ChatInterface = () => {
   }, [messages]);
 
   const sendMessage = async () => {
-    if (!inputMessage.trim() || isLoading || !isAuthenticated || !idToken) return;
+    if (!inputMessage.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -62,7 +55,6 @@ const ChatInterface = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${idToken}`,
         },
         body: JSON.stringify({
           model: 'gpt-4',
@@ -100,21 +92,11 @@ const ChatInterface = () => {
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Error calling chat API:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      if (errorMessage.includes('401') || errorMessage.includes('403')) {
-        toast({
-          title: "Authentifizierung erforderlich",
-          description: "Bitte melden Sie sich mit Ihrem Google-Konto an, um fortzufahren.",
-          variant: "destructive"
-        });
-        signOut(); // Clear invalid token
-      } else {
-        toast({
-          title: "Fehler",
-          description: "Es gab einen Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut.",
-          variant: "destructive"
-        });
-      }
+      toast({
+        title: "Fehler",
+        description: "Es gab einen Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut.",
+        variant: "destructive"
+      });
     } finally {
       setIsLoading(false);
     }
@@ -142,134 +124,95 @@ const ChatInterface = () => {
         
         <Card className="bg-card border-accent/30 h-[600px] flex flex-col">
           <CardHeader>
-            <CardTitle className="text-xl text-foreground flex items-center justify-between">
-              <div className="flex items-center">
-                <Bot className="w-5 h-5 text-accent mr-2" />
-                Chat mit Cross-Selling Agent
-              </div>
-              {authLoading ? (
-                <div className="text-sm text-muted-foreground">Lade...</div>
-              ) : isAuthenticated ? (
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">
-                    {user?.name || user?.email}
-                  </span>
-                  <Button variant="outline" size="sm" onClick={signOut}>
-                    Abmelden
-                  </Button>
-                </div>
-              ) : (
-                <Button variant="outline" size="sm" onClick={signIn}>
-                  <LogIn className="w-4 h-4 mr-2" />
-                  Mit Google anmelden
-                </Button>
-              )}
+            <CardTitle className="text-xl text-foreground flex items-center">
+              <Bot className="w-5 h-5 text-accent mr-2" />
+              Chat mit Cross-Selling Agent
             </CardTitle>
           </CardHeader>
           
           <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
-            {!isAuthenticated ? (
-              <div className="flex-1 flex items-center justify-center p-6">
-                <div className="text-center">
-                  <LogIn className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
-                    Google-Authentifizierung erforderlich
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
-                    Melden Sie sich mit Ihrem Google-Konto an, um mit dem Agent zu chatten.
-                  </p>
-                  <Button onClick={signIn}>
-                    <LogIn className="w-4 h-4 mr-2" />
-                    Mit Google anmelden
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <>
-                <ScrollArea className="flex-1 px-6 h-0" ref={scrollAreaRef}>
-                  <div className="space-y-4 py-4">
-                    {messages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`flex items-start space-x-3 ${
-                          message.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                        }`}
-                      >
-                        <div className={`p-2 rounded-full ${
-                          message.role === 'user' 
-                            ? 'bg-primary text-primary-foreground' 
-                            : 'bg-accent text-accent-foreground'
-                        }`}>
-                          {message.role === 'user' ? (
-                            <User className="w-4 h-4" />
-                          ) : (
-                            <Bot className="w-4 h-4" />
-                          )}
-                        </div>
-                        <div className={`flex-1 max-w-[80%] min-w-0 ${
-                          message.role === 'user' ? 'text-right' : ''
-                        }`}>
-                          <div className={`p-3 rounded-lg break-words ${
-                            message.role === 'user'
-                              ? 'bg-primary text-primary-foreground ml-auto max-w-full'
-                              : 'bg-muted text-muted-foreground max-w-full'
-                          }`}>
-                            <p className="whitespace-pre-wrap break-words overflow-wrap-anywhere">{message.content}</p>
-                            <p className={`text-xs mt-1 opacity-70 ${
-                              message.role === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground/70'
-                            }`}>
-                              {message.timestamp.toLocaleTimeString('de-DE', {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    {isLoading && (
-                      <div className="flex items-start space-x-3">
-                        <div className="p-2 rounded-full bg-accent text-accent-foreground">
-                          <Bot className="w-4 h-4" />
-                        </div>
-                        <div className="flex-1 max-w-[80%] min-w-0">
-                          <div className="p-3 rounded-lg bg-muted text-muted-foreground max-w-full">
-                            <div className="flex items-center space-x-2">
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                              <span>Agent denkt nach...</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </ScrollArea>
-                
-                <div className="p-6 border-t border-border">
-                  <div className="flex space-x-2">
-                    <Input
-                      value={inputMessage}
-                      onChange={(e) => setInputMessage(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      placeholder="Schreiben Sie Ihre Nachricht..."
-                      disabled={isLoading || !isAuthenticated}
-                      className="flex-1"
-                    />
-                    <Button
-                      onClick={sendMessage}
-                      disabled={!inputMessage.trim() || isLoading || !isAuthenticated}
-                      size="icon"
-                    >
-                      {isLoading ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
+            <ScrollArea className="flex-1 px-6 h-0" ref={scrollAreaRef}>
+              <div className="space-y-4 py-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex items-start space-x-3 ${
+                      message.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''
+                    }`}
+                  >
+                    <div className={`p-2 rounded-full ${
+                      message.role === 'user' 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'bg-accent text-accent-foreground'
+                    }`}>
+                      {message.role === 'user' ? (
+                        <User className="w-4 h-4" />
                       ) : (
-                        <Send className="w-4 h-4" />
+                        <Bot className="w-4 h-4" />
                       )}
-                    </Button>
+                    </div>
+                    <div className={`flex-1 max-w-[80%] min-w-0 ${
+                      message.role === 'user' ? 'text-right' : ''
+                    }`}>
+                      <div className={`p-3 rounded-lg break-words ${
+                        message.role === 'user'
+                          ? 'bg-primary text-primary-foreground ml-auto max-w-full'
+                          : 'bg-muted text-muted-foreground max-w-full'
+                      }`}>
+                        <p className="whitespace-pre-wrap break-words overflow-wrap-anywhere">{message.content}</p>
+                        <p className={`text-xs mt-1 opacity-70 ${
+                          message.role === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground/70'
+                        }`}>
+                          {message.timestamp.toLocaleTimeString('de-DE', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </>
-            )}
+                ))}
+                {isLoading && (
+                  <div className="flex items-start space-x-3">
+                    <div className="p-2 rounded-full bg-accent text-accent-foreground">
+                      <Bot className="w-4 h-4" />
+                    </div>
+                    <div className="flex-1 max-w-[80%] min-w-0">
+                      <div className="p-3 rounded-lg bg-muted text-muted-foreground max-w-full">
+                        <div className="flex items-center space-x-2">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Agent denkt nach...</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+            
+            <div className="p-6 border-t border-border">
+              <div className="flex space-x-2">
+                <Input
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Schreiben Sie Ihre Nachricht..."
+                  disabled={isLoading}
+                  className="flex-1"
+                />
+                <Button
+                  onClick={sendMessage}
+                  disabled={!inputMessage.trim() || isLoading}
+                  size="icon"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Send className="w-4 h-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
