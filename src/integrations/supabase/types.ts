@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -112,6 +112,7 @@ export type Database = {
           overall_sentiment: string | null
           raw_transcript_id: string | null
           status: string | null
+          transcript_summary: string | null
           updated_at: string | null
           vehicle_id: string | null
         }
@@ -131,6 +132,7 @@ export type Database = {
           overall_sentiment?: string | null
           raw_transcript_id?: string | null
           status?: string | null
+          transcript_summary?: string | null
           updated_at?: string | null
           vehicle_id?: string | null
         }
@@ -150,6 +152,7 @@ export type Database = {
           overall_sentiment?: string | null
           raw_transcript_id?: string | null
           status?: string | null
+          transcript_summary?: string | null
           updated_at?: string | null
           vehicle_id?: string | null
         }
@@ -636,28 +639,36 @@ export type Database = {
       log_verification_attempt: {
         Args:
           | {
+              p_address_verified: boolean
+              p_agent_id?: string
+              p_conversation_id?: string
               p_customer_id: string
-              p_matched_customer_id: string
               p_input_data: Json
               p_match_confidence: number
-              p_address_verified: boolean
+              p_matched_customer_id: string
               p_status: string
             }
           | {
+              p_address_verified: boolean
               p_customer_id: string
-              p_matched_customer_id: string
               p_input_data: Json
               p_match_confidence: number
-              p_address_verified: boolean
+              p_matched_customer_id: string
               p_status: string
-              p_agent_id?: string
-              p_conversation_id?: string
             }
         Returns: Json
       }
       populate_claims_sentiment: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      update_all_claim_sentiments: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          skipped_claims: number
+          total_claims: number
+          updated_claims: number
+        }[]
       }
     }
     Enums: {
