@@ -7,7 +7,7 @@ import { useAuth } from '@/components/AuthProvider';
 import { ClaimsProvider } from '@/components/ClaimsProvider';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
-import ChatInterface from '@/components/ChatInterface';
+
 import CustomerDataTable from '@/components/CustomerDataTable';
 import ProductDataTable from '@/components/ProductDataTable';
 import ProcessVisualization from '@/components/ProcessVisualization';
@@ -62,7 +62,29 @@ const DashboardPage = () => {
         
         <main>
           <HeroSection />
-          <ChatInterface />
+          
+          {/* Chat Interface */}
+          <section id="showcase" className="py-20 px-6">
+            <div className="container mx-auto max-w-4xl">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold mb-4 text-foreground">
+                  Cross-Selling Agent
+                </h2>
+                <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
+                  Interagieren Sie mit unserem intelligenten Agent, der Kundendaten analysiert und 
+                  personalisierte Cross-Selling-Strategien entwickelt.
+                </p>
+              </div>
+              
+              <div className="bg-card border border-accent/30 rounded-lg overflow-hidden h-[600px]">
+                <iframe
+                  src="https://chat-iframe.k8s.agentic-layer.ai/"
+                  className="w-full h-full border-0"
+                  title="Cross-Selling Agent Chat"
+                />
+              </div>
+            </div>
+          </section>
           
           {/* Toggle Buttons for Data Tables */}
           <div className="container mx-auto px-6 py-6">
