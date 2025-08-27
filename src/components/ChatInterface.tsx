@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/components/AuthProvider';
 
 interface Message {
   id: string;
@@ -27,7 +26,6 @@ const ChatInterface = () => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const { googleIdToken } = useAuth();
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -53,15 +51,10 @@ const ChatInterface = () => {
     setIsLoading(true);
 
     try {
-      if (!googleIdToken) {
-        throw new Error('Nicht authentifiziert');
-      }
-
       const response = await fetch('https://cross-selling-agent.k8s.agentic-layer.ai/api/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${googleIdToken}`,
         },
         body: JSON.stringify({
           model: 'gpt-4',
