@@ -25,16 +25,6 @@ const ProcessVisualization = () => {
                 <h3 className="font-semibold text-lg mb-2">Cross Selling Agent</h3>
                 <p className="text-sm opacity-90">Produktempfehlungen</p>
               </div>
-              
-              {/* Database connections below Cross Selling Agent */}
-              <div className="mt-4 space-y-2">
-                <div className="bg-secondary/60 text-secondary-foreground rounded-md p-3 text-center">
-                  <p className="text-xs font-medium">Versicherer DB</p>
-                </div>
-                <div className="bg-secondary/60 text-secondary-foreground rounded-md p-3 text-center">
-                  <p className="text-xs font-medium">CRM</p>
-                </div>
-              </div>
             </div>
 
             {/* Communications Agent - Bottom Right */}
