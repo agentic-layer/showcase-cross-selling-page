@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -18,10 +18,20 @@ const DashboardPage = () => {
   const { user } = useAuth();
   const [showCustomerData, setShowCustomerData] = useState(false);
   const [showProductData, setShowProductData] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/login');
+  };
+
+  const sendTestMessage = () => {
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow?.postMessage({
+        type: 'send-message',
+        data: { message: 'Erstelle eine Cross-Selling Strategie für die Kundin mit der ID cust001.' }
+      }, '*');
+    }
   };
 
   return (
@@ -78,10 +88,21 @@ const DashboardPage = () => {
               
               <div className="bg-card border border-accent/30 rounded-lg overflow-hidden h-[600px]">
                 <iframe
+                  ref={iframeRef}
                   src="https://chat-iframe.k8s.agentic-layer.ai/"
                   className="w-full h-full border-0"
                   title="Cross-Selling Agent Chat"
                 />
+              </div>
+              
+              <div className="text-center mt-6">
+                <Button 
+                  variant="outline" 
+                  onClick={sendTestMessage}
+                  className="px-6 py-2"
+                >
+                  Beispielnachricht
+                </Button>
               </div>
             </div>
           </section>
