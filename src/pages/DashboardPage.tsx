@@ -89,7 +89,7 @@ const DashboardPage = () => {
               <div className="bg-card border border-accent/30 rounded-lg overflow-hidden h-[600px]">
                 <iframe
                   ref={iframeRef}
-                  src="https://chat-iframe.k8s.agentic-layer.ai/"
+                  src="https://cross-selling-agent-chat.k8s.agentic-layer.ai/"
                   className="w-full h-full border-0"
                   title="Cross-Selling Agent Chat"
                 />
