@@ -34,30 +34,6 @@ const DashboardPage = () => {
     }
   };
 
-  const handleIframeLoad = () => {
-    if (iframeRef.current) {
-      const iframe = iframeRef.current;
-      
-      // Check for 403 error by trying to access iframe content
-      const checkFor403 = () => {
-        try {
-          // If we can't access the iframe content and it's not loading, it might be a 403
-          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-          if (!iframeDoc && iframe.src) {
-            // Redirect to external URL if iframe is blocked
-            window.location.href = 'https://cross-selling-agent-chat.k8s.agentic-layer.ai/';
-          }
-        } catch (error) {
-          // If we get a cross-origin error, redirect to external URL
-          window.location.href = 'https://cross-selling-agent-chat.k8s.agentic-layer.ai/';
-        }
-      };
-
-      // Check after a delay to allow iframe to load
-      setTimeout(checkFor403, 3000);
-    }
-  };
-
   return (
     <ClaimsProvider>
       <div className="min-h-screen bg-background">
@@ -116,8 +92,6 @@ const DashboardPage = () => {
                   src="https://cross-selling-agent-chat.k8s.agentic-layer.ai/"
                   className="w-full h-full border-0"
                   title="Cross-Selling Agent Chat"
-                  onLoad={handleIframeLoad}
-                  onError={() => window.location.href = 'https://cross-selling-agent-chat.k8s.agentic-layer.ai/'}
                 />
               </div>
               
