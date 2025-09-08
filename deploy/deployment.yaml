@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: use-case-cross-selling-showcase
+  namespace: use-case-cross-selling-showcase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: use-case-cross-selling-showcase
+  template:
+    metadata:
+      labels:
+        app: use-case-cross-selling-showcase
+    spec:
+      containers:
+        - name: use-case-cross-selling-showcase
+          image: use-case-cross-selling-showcase:main-9384a61-1757337892
+          ports:
+            - name: http-web-svc
+              containerPort: 80
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            httpGet:
+              port: http-web-svc
+              path: /health
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            httpGet:
+              port: http-web-svc
+              path: /health
