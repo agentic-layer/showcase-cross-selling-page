@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from './AuthProvider';
 import { useToast } from '@/hooks/use-toast';
 import { formatBerlinTime, formatBerlinLocalTime, formatBirthDate } from '@/lib/dateUtils';
 
@@ -62,17 +61,11 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
   const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
   const [selectedClaimData, setSelectedClaimData] = useState<ClaimData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { user } = useAuth();
   const { toast } = useToast();
 
   // Fetch available claims (last 5) with optional auto-selection
   const fetchAvailableClaims = async (autoSelectId?: string) => {
     try {
-      if (!user) {
-        setAvailableClaims([]);
-        setIsLoading(false);
-        return;
-      }
 
       const { data: claims, error } = await supabase
         .from('claims')
@@ -292,17 +285,10 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
     }
   };
 
-  // Fetch available claims when user changes
+  // Fetch available claims on mount
   useEffect(() => {
-    if (user) {
-      fetchAvailableClaims();
-    } else {
-      setAvailableClaims([]);
-      setSelectedClaimId(null);
-      setSelectedClaimData(null);
-      setIsLoading(false);
-    }
-  }, [user]);
+    fetchAvailableClaims();
+  }, []);
 
   // Fetch claim data when selected claim changes
   useEffect(() => {
@@ -313,7 +299,6 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
 
   // Set up real-time subscription
   useEffect(() => {
-    if (!user) return;
 
     const channel = supabase
       .channel('claims-changes')
@@ -355,7 +340,7 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, selectedClaimId]);
+  }, [selectedClaimId]);
 
   return (
     <ClaimsContext.Provider

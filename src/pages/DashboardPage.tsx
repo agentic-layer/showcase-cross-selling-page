@@ -1,9 +1,6 @@
 
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/components/AuthProvider';
 import { ClaimsProvider } from '@/components/ClaimsProvider';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
@@ -14,16 +11,9 @@ import ProcessVisualization from '@/components/ProcessVisualization';
 import Footer from '@/components/Footer';
 
 const DashboardPage = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
   const [showCustomerData, setShowCustomerData] = useState(false);
   const [showProductData, setShowProductData] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate('/login');
-  };
 
   const sendTestMessage = () => {
     if (iframeRef.current) {
@@ -50,7 +40,7 @@ const DashboardPage = () => {
               <span className="ml-2 font-semibold text-lg">Cross Selling Agent</span>
             </div>
             
-            {/* Navigation and logout */}
+            {/* Navigation */}
             <div className="flex items-center space-x-4">
               <nav className="hidden md:flex space-x-8">
                 <a href="#showcase" className="text-foreground hover:text-accent transition-colors">
@@ -60,12 +50,6 @@ const DashboardPage = () => {
                   Technologie
                 </a>
               </nav>
-              <span className="text-sm text-muted-foreground">
-                {user?.email}
-              </span>
-              <Button variant="outline" onClick={handleLogout}>
-                Abmelden
-              </Button>
             </div>
           </div>
         </header>
