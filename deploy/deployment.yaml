@@ -21,7 +21,7 @@ spec:
               containerPort: 80
           env:
             - name: BACKEND_URL
-              value: "http://insurance-host-agent.use-case-cross-selling.svc.cluster.local"
+              value: "http://insurance-host-agent.use-case-cross-selling.svc.cluster.local:8000"
           readinessProbe:
             initialDelaySeconds: 5
             periodSeconds: 5
