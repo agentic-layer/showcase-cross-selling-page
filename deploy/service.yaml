@@ -10,7 +10,7 @@ spec:
     app: use-case-cross-selling-showcase
   ports:
   - name: http
-    port: 8000
+    port: 80
     targetPort: http-web-svc
     protocol: TCP
   type: ClusterIP
