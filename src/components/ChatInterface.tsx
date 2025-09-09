@@ -41,7 +41,7 @@ const ChatInterface = forwardRef<ChatInterfaceRef>((props, ref) => {
   }, [messages]);
 
   const sendMessage = async (messageText?: string) => {
-    const messageToSend = messageText || inputMessage.trim();
+    const messageToSend = messageText ? messageText.trim() : inputMessage.trim();
     if (!messageToSend || isLoading) return;
 
     const userMessage: Message = {
