@@ -27,7 +27,7 @@ docker-build:
 
 .PHONY: docker-run
 docker-run: docker-build
-	docker run --rm -it -p 8000:80 $(IMG)
+	docker run --rm -it -p 8000:80 -e BACKEND_URL=http://host.docker.internal:9009 $(IMG)
 
 .PHONY: docker-push
 docker-push:
