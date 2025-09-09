@@ -8,6 +8,9 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      '/api/v1/chat/completions': 'http://localhost:9009'
+    },
   },
   plugins: [
     react(),

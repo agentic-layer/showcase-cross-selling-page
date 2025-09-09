@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ClaimsProvider } from '@/components/ClaimsProvider';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
+import ChatInterface, { ChatInterfaceRef } from '@/components/ChatInterface';
 
 import CustomerDataTable from '@/components/CustomerDataTable';
 import ProductDataTable from '@/components/ProductDataTable';
@@ -13,14 +14,11 @@ import Footer from '@/components/Footer';
 const DashboardPage = () => {
   const [showCustomerData, setShowCustomerData] = useState(false);
   const [showProductData, setShowProductData] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const chatRef = useRef<ChatInterfaceRef>(null);
 
   const sendTestMessage = () => {
-    if (iframeRef.current) {
-      iframeRef.current.contentWindow?.postMessage({
-        type: 'send-message',
-        data: { message: 'Erstelle eine Cross-Selling Strategie für die Kundin mit der ID cust001.' }
-      }, '*');
+    if (chatRef.current) {
+      chatRef.current.sendMessage('Erstelle eine Cross-Selling Strategie für die Kundin mit der ID cust001.');
     }
   };
 
@@ -70,14 +68,7 @@ const DashboardPage = () => {
                 </p>
               </div>
               
-              <div className="bg-card border border-accent/30 rounded-lg overflow-hidden h-[600px]">
-                <iframe
-                  ref={iframeRef}
-                  src="https://cross-selling-agent-chat.k8s.agentic-layer.ai/"
-                  className="w-full h-full border-0"
-                  title="Cross-Selling Agent Chat"
-                />
-              </div>
+              <ChatInterface ref={chatRef} />
               
               <div className="text-center mt-6">
                 <Button 

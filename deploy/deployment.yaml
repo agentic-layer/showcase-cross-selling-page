@@ -19,6 +19,9 @@ spec:
           ports:
             - name: http-web-svc
               containerPort: 80
+          env:
+            - name: BACKEND_URL
+              value: "http://insurance-host-agent.use-case-cross-selling.svc.cluster.local"
           readinessProbe:
             initialDelaySeconds: 5
             periodSeconds: 5

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,11 @@ interface Message {
   timestamp: Date;
 }
 
-const ChatInterface = () => {
+export interface ChatInterfaceRef {
+  sendMessage: (message: string) => void;
+}
+
+const ChatInterface = forwardRef<ChatInterfaceRef>((props, ref) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -36,22 +40,23 @@ const ChatInterface = () => {
     }
   }, [messages]);
 
-  const sendMessage = async () => {
-    if (!inputMessage.trim() || isLoading) return;
+  const sendMessage = async (messageText?: string) => {
+    const messageToSend = messageText || inputMessage.trim();
+    if (!messageToSend || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content: inputMessage,
+      content: messageToSend,
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
+    if (!messageText) setInputMessage(''); // Only clear input if it was from the input field
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://cross-selling-agent.k8s.agentic-layer.ai/api/chat/completions', {
+      const response = await fetch('/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +74,7 @@ const ChatInterface = () => {
             })),
             {
               role: 'user',
-              content: inputMessage
+              content: messageToSend
             }
           ],
           temperature: 0.7,
@@ -102,6 +107,10 @@ const ChatInterface = () => {
     }
   };
 
+  useImperativeHandle(ref, () => ({
+    sendMessage
+  }));
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -110,27 +119,15 @@ const ChatInterface = () => {
   };
 
   return (
-    <section id="showcase" className="py-20 px-6">
-      <div className="container mx-auto max-w-4xl">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4 text-foreground">
-            Cross-Selling Agent
-          </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
-            Interagieren Sie mit unserem intelligenten Agent, der Kundendaten analysiert und 
-            personalisierte Cross-Selling-Strategien entwickelt.
-          </p>
-        </div>
-        
-        <Card className="bg-card border-accent/30 h-[600px] flex flex-col">
-          <CardHeader>
-            <CardTitle className="text-xl text-foreground flex items-center">
-              <Bot className="w-5 h-5 text-accent mr-2" />
-              Chat mit Cross-Selling Agent
-            </CardTitle>
-          </CardHeader>
-          
-          <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
+    <Card className="bg-card border-accent/30 h-[600px] flex flex-col">
+      <CardHeader>
+        <CardTitle className="text-xl text-foreground flex items-center">
+          <Bot className="w-5 h-5 text-accent mr-2" />
+          Chat mit Cross-Selling Agent
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
             <ScrollArea className="flex-1 px-6 h-0" ref={scrollAreaRef}>
               <div className="space-y-4 py-4">
                 {messages.map((message) => (
@@ -201,7 +198,7 @@ const ChatInterface = () => {
                   className="flex-1"
                 />
                 <Button
-                  onClick={sendMessage}
+                  onClick={() => sendMessage()}
                   disabled={!inputMessage.trim() || isLoading}
                   size="icon"
                 >
@@ -215,9 +212,9 @@ const ChatInterface = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
-    </section>
   );
-};
+});
+
+ChatInterface.displayName = 'ChatInterface';
 
 export default ChatInterface;

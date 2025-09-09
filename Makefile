@@ -1,6 +1,7 @@
-VERSION ?= $(shell echo "$$(git rev-parse --abbrev-ref HEAD)-$$(git rev-parse --short=7 HEAD)-$$(date +%s)")
+# Calculate VERSION once and reuse it
+VERSION := $(shell echo "$$(git rev-parse --abbrev-ref HEAD)-$$(git rev-parse --short=7 HEAD)-$$(date +%s)")
 IMAGE_TAG_BASE ?= eu.gcr.io/agentic-layer/use-case-cross-selling-showcase
-IMG ?= $(IMAGE_TAG_BASE):$(VERSION)
+IMG := $(IMAGE_TAG_BASE):$(VERSION)
 PLATFORMS ?= linux/arm64,linux/amd64
 
 
@@ -26,7 +27,7 @@ docker-build:
 
 .PHONY: docker-run
 docker-run: docker-build
-	docker run --rm -it -p 8000:8000 $(IMG)
+	docker run --rm -it -p 8000:80 $(IMG)
 
 .PHONY: docker-push
 docker-push:
