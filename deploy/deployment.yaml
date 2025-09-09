@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: use-case-cross-selling-showcase
-          image: use-case-cross-selling-showcase:main-9384a61-1757337892
+          image: use-case-cross-selling-showcase:main-69e99aa-1757342145
           ports:
             - name: http-web-svc
               containerPort: 80
