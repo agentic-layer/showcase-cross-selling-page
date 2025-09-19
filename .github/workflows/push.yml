@@ -6,8 +6,8 @@ on:
       - 'v*'
 
 env:
-  WORKLOAD_IDENTITY_PROVIDER: 'projects/363137235362/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github-actions-provider'
-  SERVICE_ACCOUNT: 'sa-github-actions@agentic-layer.iam.gserviceaccount.com'
+  WORKLOAD_IDENTITY_PROVIDER: 'projects/387309373030/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github-actions-provider'
+  SERVICE_ACCOUNT: 'sa-github-actions@qaware-paal.iam.gserviceaccount.com'
 
 jobs:
   push:
