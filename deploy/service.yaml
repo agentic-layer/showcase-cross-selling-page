@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: use-case-cross-selling-showcase
-  namespace: use-case-cross-selling-showcase
+  name: use-case-cross-selling
+  namespace: use-case-cross-selling
   labels:
     app: cross-selling-agent-showcase
 spec:

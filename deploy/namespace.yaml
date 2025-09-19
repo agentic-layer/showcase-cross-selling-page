@@ -1,4 +1,0 @@
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: use-case-cross-selling-showcase
