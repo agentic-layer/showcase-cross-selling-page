@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: use-case-cross-selling
+  name: use-case-cross-selling-showcase
   namespace: use-case-cross-selling
 spec:
   replicas: 1
