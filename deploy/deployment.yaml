@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: use-case-cross-selling-showcase
-  namespace: use-case-cross-selling
+  name: showcase-cross-selling-page
+  namespace: showcase-cross-selling
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: use-case-cross-selling-showcase
+      app: showcase-cross-selling-page
   template:
     metadata:
       labels:
-        app: use-case-cross-selling-showcase
+        app: showcase-cross-selling-page
     spec:
       containers:
-        - name: use-case-cross-selling-showcase
-          image: use-case-cross-selling-showcase:main-69e99aa-1757342145
+        - name: showcase-cross-selling-page
+          image: showcase-cross-selling-page:main-69e99aa-1757342145
           ports:
             - name: http-web-svc
               containerPort: 80
           env:
             - name: BACKEND_URL
-              value: "http://insurance-host-agent.use-case-cross-selling.svc.cluster.local:8000"
+              value: "http://insurance-host-agent.showcase-cross-selling.svc.cluster.local:8000"
           readinessProbe:
             initialDelaySeconds: 5
             periodSeconds: 5

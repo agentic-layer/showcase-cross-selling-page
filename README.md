@@ -33,7 +33,7 @@ cd <YOUR_PROJECT_NAME>
 npm i
 
 # Step 4: Use a kubernetes port-forward to expose the insurance-host-agent locally
-kubectl port-forward service/insurance-host-agent --namespace use-case-cross-selling 9009:8000
+kubectl port-forward service/insurance-host-agent --namespace showcase-cross-selling 9009:8000
 
 # Step 5: Start the development server with auto-reloading and an instant preview.
 npm run dev
