@@ -21,7 +21,7 @@ spec:
               containerPort: 80
           env:
             - name: BACKEND_URL
-              value: "http://agent-gateway.agent-gateway.svc.cluster.local:10000/insurance-host-agent"
+              value: "http://agent-gateway.agent-gateway.svc.cluster.local:10000"
           readinessProbe:
             initialDelaySeconds: 5
             periodSeconds: 5
