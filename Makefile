@@ -1,5 +1,5 @@
 # Calculate VERSION once and reuse it
-VERSION := $(shell echo "$$(git rev-parse --abbrev-ref HEAD)-$$(git rev-parse --short=7 HEAD)-$$(date +%s)")
+VERSION ?= $(shell echo "$$(git rev-parse --abbrev-ref HEAD)-$$(git rev-parse --short=7 HEAD)-$$(date +%s)")
 IMAGE_TAG_BASE ?= europe-west3-docker.pkg.dev/qaware-paal/agentic-layer-private/showcase-cross-selling-page
 IMG := $(IMAGE_TAG_BASE):$(VERSION)
 PLATFORMS ?= linux/arm64,linux/amd64
