@@ -18,7 +18,7 @@ const DashboardPage = () => {
 
   const sendTestMessage = () => {
     if (chatRef.current) {
-      chatRef.current.sendMessage('Erstelle eine Cross-Selling Strategie für die Kundin "Anna Müller."');
+      chatRef.current.sendMessage('Erstelle eine Cross-Selling Strategie für die Kundin Anna Müller.');
     }
   };
 
