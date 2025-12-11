@@ -7,7 +7,7 @@ COPY / ./
 RUN npm run build
 
 # Use nginx alpine image for lightweight static serving
-FROM nginx:alpine
+FROM nginx:1.28-alpine3.21
 
 # Install gettext for envsubst command
 RUN apk add --no-cache gettext
