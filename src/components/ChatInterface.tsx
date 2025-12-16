@@ -18,6 +18,7 @@ export interface ChatInterfaceRef {
 }
 
 const ChatInterface = forwardRef<ChatInterfaceRef>((props, ref) => {
+  const [conversationId] = useState(() => crypto.randomUUID());
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -60,6 +61,7 @@ const ChatInterface = forwardRef<ChatInterfaceRef>((props, ref) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Conversation-ID': conversationId
         },
         body: JSON.stringify({
           model: 'gpt-4',
