@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { formatBerlinTime, formatBerlinLocalTime, formatBirthDate } from '@/lib/dateUtils';
@@ -65,6 +65,7 @@ const ClaimsContext = createContext<ClaimsContextType>({
   setSelectedClaimId: () => {},
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useClaims = () => {
   const context = useContext(ClaimsContext);
   if (!context) {
@@ -85,7 +86,7 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
   const { toast } = useToast();
 
   // Fetch available claims (last 5) with optional auto-selection
-  const fetchAvailableClaims = async (autoSelectId?: string) => {
+  const fetchAvailableClaims = useCallback(async (autoSelectId?: string) => {
     try {
 
       const { data: claims, error } = await supabase
@@ -140,10 +141,10 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [toast, selectedClaimId]);
 
   // Fetch detailed claim data
-  const fetchClaimData = async (claimId: string) => {
+  const fetchClaimData = useCallback(async (claimId: string) => {
     try {
       setIsLoading(true);
       
@@ -305,11 +306,12 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [toast]);
 
   // Fetch available claims on mount
   useEffect(() => {
     fetchAvailableClaims();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Fetch claim data when selected claim changes
@@ -317,7 +319,7 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
     if (selectedClaimId) {
       fetchClaimData(selectedClaimId);
     }
-  }, [selectedClaimId]);
+  }, [selectedClaimId, fetchClaimData]);
 
   // Set up real-time subscription
   useEffect(() => {
@@ -362,7 +364,7 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [selectedClaimId]);
+  }, [selectedClaimId, fetchAvailableClaims, fetchClaimData]);
 
   return (
     <ClaimsContext.Provider
