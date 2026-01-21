@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 // TypeScript declaration for the custom element
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       'elevenlabs-convai': {

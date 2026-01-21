@@ -18,7 +18,7 @@ interface Product {
   name: string;
   description: string;
   target_segments: string[];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const productData: { [key: string]: Product } = {

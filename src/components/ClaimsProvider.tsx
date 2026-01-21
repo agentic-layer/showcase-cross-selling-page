@@ -28,6 +28,27 @@ interface ClaimSummary {
   claim_number: string;
 }
 
+interface AccidentLocation {
+  street?: string;
+  house_number?: string;
+  zip_code?: string;
+  postal_code?: string;
+  city?: string;
+  remarks?: string;
+  country?: string;
+}
+
+interface DriverInfo {
+  first_name?: string;
+  last_name?: string;
+  relation_to_policy_holder?: string;
+}
+
+interface AdditionalClaimData {
+  transcript_summary?: string;
+  material_damage?: string;
+}
+
 interface ClaimsContextType {
   availableClaims: ClaimSummary[];
   selectedClaimId: string | null;
@@ -188,8 +209,9 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
           .maybeSingle();
         
         if (additionalData) {
-          transcriptSummary = (additionalData as any).transcript_summary;
-          materialDamage = (additionalData as any).material_damage;
+          const typedData = additionalData as AdditionalClaimData;
+          transcriptSummary = typedData.transcript_summary;
+          materialDamage = typedData.material_damage;
         }
       } catch (error) {
         console.log('Could not fetch additional fields:', error);
@@ -198,7 +220,7 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
       // Format the data for display
       const customer = claimData.customers;
 
-      const formatAccidentLocation = (location: any) => {
+      const formatAccidentLocation = (location: string | AccidentLocation | null | undefined): string => {
         if (!location) return 'Nicht verfügbar';
         if (typeof location === 'string') return location;
         
@@ -235,7 +257,7 @@ export const ClaimsProvider: React.FC<ClaimsProviderProps> = ({ children }) => {
         return address || 'Nicht verfügbar';
       };
 
-      const formatDriver = (driver: any) => {
+      const formatDriver = (driver: string | DriverInfo | null | undefined): string => {
         if (!driver) return 'Nicht verfügbar';
         if (typeof driver === 'string') return driver;
         
