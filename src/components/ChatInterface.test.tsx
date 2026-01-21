@@ -72,6 +72,7 @@ describe('ChatInterface', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-Conversation-ID': expect.stringMatching(/^[0-9a-fA-F-]{36}$/),
       },
       body: expect.stringContaining('"content":"Test message from ref"')
     });
@@ -108,6 +109,7 @@ describe('ChatInterface', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-Conversation-ID': expect.stringMatching(/^[0-9a-fA-F-]{36}$/),
       },
       body: expect.stringContaining('"content":"Test message"')
     });

@@ -32,7 +32,7 @@ interface Policy {
   coverage_amount?: number;
   start_date: string;
   status?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface CommunicationRecord {
