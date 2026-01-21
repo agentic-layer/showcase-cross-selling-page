@@ -64,12 +64,8 @@ const ChatInterface = forwardRef<ChatInterfaceRef>((props, ref) => {
           'X-Conversation-ID': conversationId
         },
         body: JSON.stringify({
-          model: 'gpt-4',
+          model: 'insurance-host-agent',
           messages: [
-            {
-              role: 'system',
-              content: 'Du bist ein Cross-Selling Agent für eine Versicherung. Du hilfst dabei, personalisierte Cross-Selling-Strategien zu entwickeln und Kundennachrichten zu formulieren. Antworte auf Deutsch.'
-            },
             ...messages.map(msg => ({
               role: msg.role,
               content: msg.content
@@ -78,9 +74,7 @@ const ChatInterface = forwardRef<ChatInterfaceRef>((props, ref) => {
               role: 'user',
               content: messageToSend
             }
-          ],
-          temperature: 0.7,
-          max_tokens: 1000
+          ]
         })
       });
 
@@ -128,7 +122,7 @@ const ChatInterface = forwardRef<ChatInterfaceRef>((props, ref) => {
           Chat mit Cross-Selling Agent
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
             <ScrollArea className="flex-1 px-6 h-0" ref={scrollAreaRef}>
               <div className="space-y-4 py-4">
@@ -188,7 +182,7 @@ const ChatInterface = forwardRef<ChatInterfaceRef>((props, ref) => {
                 )}
               </div>
             </ScrollArea>
-            
+
             <div className="p-6 border-t border-border">
               <div className="flex space-x-2">
                 <Input
