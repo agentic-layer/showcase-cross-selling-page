@@ -64,7 +64,7 @@ const ChatInterface = forwardRef<ChatInterfaceRef>((props, ref) => {
           'X-Conversation-ID': conversationId
         },
         body: JSON.stringify({
-          model: 'insurance-host-agent',
+          model: 'showcase-cross-selling/insurance-host-agent',
           messages: [
             ...messages.map(msg => ({
               role: msg.role,
